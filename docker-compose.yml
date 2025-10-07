@@ -8,6 +8,7 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
       - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:
@@ -20,6 +21,8 @@ services:
       - elasticsearch
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USER}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
     ports:
       - "5601:5601"
 
@@ -30,10 +33,12 @@ services:
       - elasticsearch
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - ELASTIC_USER=${ELASTIC_USER}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ports:
       - "5044:5044"
       - "9600:9600"
 
 volumes:
   elasticsearch_data:
-
